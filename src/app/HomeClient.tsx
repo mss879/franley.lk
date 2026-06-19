@@ -511,6 +511,7 @@ export default function HomeClient({ initialProducts }: { initialProducts: Produ
                 >
                   <div className="hidden md:flex items-center gap-2 sm:gap-4 lg:gap-6">
                     {[
+                      { name: "HOME", href: "/" },
                       { name: "ABOUT", href: "/about", isExternal: true },
                       { name: "SHOP NOW", onClick: () => setIsCategoryModalOpen(true) },
                       { name: "CONTACT", href: "/contact", isExternal: true },
@@ -1432,11 +1433,10 @@ export default function HomeClient({ initialProducts }: { initialProducts: Produ
                           </svg>
                         </span>
                       </button>
-                      
+
                       <div
-                        className={`transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${
-                          isOpen ? "max-h-[300px] opacity-100 border-t border-zinc-100" : "max-h-0 opacity-0"
-                        }`}
+                        className={`transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${isOpen ? "max-h-[300px] opacity-100 border-t border-zinc-100" : "max-h-0 opacity-0"
+                          }`}
                       >
                         <p className="p-5 md:p-6 text-xs md:text-sm text-zinc-550 leading-relaxed font-medium bg-white font-outfit">
                           {item.a}

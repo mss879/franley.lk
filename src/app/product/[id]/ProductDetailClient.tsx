@@ -10,6 +10,7 @@ import {
   PRODUCT_FEATURES,
   Product,
 } from "../../products";
+import Footer from "@/components/Footer";
 
 interface CartItem {
   product: Product;
@@ -318,6 +319,8 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
         </div>
       </main>
+
+      <Footer />
 
       {/* Slide-over Cart Drawer */}
       {isCartOpen && (

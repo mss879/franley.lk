@@ -134,7 +134,7 @@ export default function Footer() {
           </div>
 
           {/* Bottom Copyright & Fine Print Bar */}
-          <div className="bg-white text-zinc-900 px-6 sm:px-10 py-6 -mx-6 sm:-mx-10 -mb-12 md:-mb-16 rounded-b-[2.0rem] md:rounded-b-[3.0rem] flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-[10px] sm:text-xs font-bold tracking-wider border-t border-zinc-200">
+          <div className="bg-white text-zinc-900 px-6 sm:px-10 py-3 -mx-6 sm:-mx-10 -mb-12 md:-mb-16 rounded-b-[2.0rem] md:rounded-b-[3.0rem] flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-[10px] sm:text-xs font-bold tracking-wider border-t border-zinc-200">
             <span className="text-zinc-650">© {currentYear} FRANLEY LUXURY. ALL RIGHTS RESERVED.</span>
             <a
               href="https://www.arcai.agency"

@@ -35,7 +35,7 @@ function Reveal({
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -5% 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -60,63 +60,6 @@ function Reveal({
     >
       {children}
     </div>
-  );
-}
-
-/* ---------------------------------------------------------------- */
-/* Count-up number (animates when scrolled into view)               */
-/* ---------------------------------------------------------------- */
-function Counter({
-  to,
-  suffix = "",
-  duration = 1800,
-}: {
-  to: number;
-  suffix?: string;
-  duration?: number;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      setValue(to);
-      return;
-    }
-
-    let raf = 0;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          observer.unobserve(el);
-          const start = performance.now();
-          const tick = (now: number) => {
-            const p = Math.min((now - start) / duration, 1);
-            const eased = 1 - Math.pow(1 - p, 3);
-            setValue(Math.round(eased * to));
-            if (p < 1) raf = requestAnimationFrame(tick);
-          };
-          raf = requestAnimationFrame(tick);
-        }
-      },
-      { threshold: 0.4 }
-    );
-    observer.observe(el);
-    return () => {
-      observer.disconnect();
-      cancelAnimationFrame(raf);
-    };
-  }, [to, duration]);
-
-  return (
-    <span ref={ref}>
-      {value}
-      {suffix}
-    </span>
   );
 }
 
@@ -152,12 +95,12 @@ function ParticleField() {
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const count = Math.min(32, Math.floor((width * height) / 28000));
+      const count = Math.min(24, Math.floor((width * height) / 32000));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.22,
-        vy: (Math.random() - 0.5) * 0.22,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.18,
       }));
     };
 
@@ -169,8 +112,8 @@ function ParticleField() {
         if (p.x < 0 || p.x > width) p.vx *= -1;
         if (p.y < 0 || p.y > height) p.vy *= -1;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(113, 113, 122, 0.25)";
+        ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(123, 3, 35, 0.15)";
         ctx.fill();
       }
       for (let i = 0; i < particles.length; i++) {
@@ -178,12 +121,12 @@ function ParticleField() {
           const a = particles[i];
           const b = particles[j];
           const dist = Math.hypot(a.x - b.x, a.y - b.y);
-          if (dist < 130) {
+          if (dist < 140) {
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(113, 113, 122, ${0.06 * (1 - dist / 130)})`;
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = `rgba(212, 175, 55, ${0.05 * (1 - dist / 140)})`;
+            ctx.lineWidth = 0.8;
             ctx.stroke();
           }
         }
@@ -206,71 +149,12 @@ function ParticleField() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 h-full w-full pointer-events-none opacity-80"
+      className="absolute inset-0 h-full w-full pointer-events-none opacity-60"
       aria-hidden="true"
     />
   );
 }
 
-/* ---------------------------------------------------------------- */
-/* Data                                                              */
-/* ---------------------------------------------------------------- */
-const STATS = [
-  { to: 10, suffix: "+", label: "Curated Products" },
-  { to: 6, suffix: "+", label: "Categories" },
-  { to: 100, suffix: "%", label: "Secure Checkout" },
-  { to: 24, suffix: "/7", label: "Always Open" },
-];
-
-const BENEFITS = [
-  {
-    n: "01",
-    title: "Handpicked For You",
-    desc: "We pick the good stuff so you don't have to scroll endlessly. Every product earns its place in the store.",
-    icon: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M12 3l2.2 5.2L20 9l-4.2 3.6L17 18l-5-3-5 3 1.2-5.4L4 9l5.8-.8L12 3z" />
-    ),
-  },
-  {
-    n: "02",
-    title: "Fair Prices & Deals",
-    desc: "Quality products at honest prices, with regular discounts and offers running across the store.",
-    icon: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M7 7h.01M3 11l8-8 10 10-8 8L3 11zm4-1a1 1 0 11-2 0 1 1 0 012 0z" />
-    ),
-  },
-  {
-    n: "03",
-    title: "Fast & Easy",
-    desc: "Simple checkout, secure payment, and quick delivery across Sri Lanka — with cash on delivery available.",
-    icon: (
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M13 3L4 14h6l-1 7 9-11h-6l1-7z" />
-    ),
-  },
-];
-
-const CATEGORIES = [
-  {
-    tag: "ELECTRONICS",
-    desc: "Headphones, speakers, chargers, webcams and smart accessories to power up your day.",
-  },
-  {
-    tag: "WORKSPACE & GEAR",
-    desc: "Keyboards, mice, laptop stands and desk essentials for work, gaming and everything in between.",
-  },
-  {
-    tag: "LIFESTYLE & TRAVEL",
-    desc: "Bags, organizers and everyday carry that mixes clean style with real-world function.",
-  },
-  {
-    tag: "LIGHTING & AMBIENCE",
-    desc: "Smart lighting and accessories to set the mood and finish off any space.",
-  },
-];
-
-/* ---------------------------------------------------------------- */
-/* Page                                                              */
-/* ---------------------------------------------------------------- */
 export default function AboutClient() {
   const [progress, setProgress] = useState(0);
   const blob1 = useRef<HTMLDivElement>(null);
@@ -278,8 +162,7 @@ export default function AboutClient() {
   const gridRef = useRef<HTMLDivElement>(null);
   const heroContent = useRef<HTMLDivElement>(null);
 
-  // Defensive: clear any leftover scroll-lock from the homepage (which sets
-  // overflow/height/width on html+body) so the About page can always scroll.
+  // Defensive: clear any leftover scroll-lock from the homepage
   useEffect(() => {
     const unlock = () => {
       for (const el of [document.documentElement, document.body]) {
@@ -293,7 +176,7 @@ export default function AboutClient() {
     return () => clearTimeout(t);
   }, []);
 
-  // Scroll progress bar + hero parallax (rAF, ref-based — no re-render storm)
+  // Scroll progress and parallax
   useEffect(() => {
     let raf = 0;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -306,12 +189,12 @@ export default function AboutClient() {
         setProgress(docH > 0 ? Math.min(y / docH, 1) : 0);
 
         if (!reduce && y < window.innerHeight) {
-          if (blob1.current) blob1.current.style.transform = `translate3d(0, ${y * 0.25}px, 0)`;
-          if (blob2.current) blob2.current.style.transform = `translate3d(0, ${y * -0.15}px, 0)`;
-          if (gridRef.current) gridRef.current.style.transform = `translate3d(0, ${y * 0.12}px, 0)`;
+          if (blob1.current) blob1.current.style.transform = `translate3d(0, ${y * 0.2}px, 0)`;
+          if (blob2.current) blob2.current.style.transform = `translate3d(0, ${y * -0.12}px, 0)`;
+          if (gridRef.current) gridRef.current.style.transform = `translate3d(0, ${y * 0.1}px, 0)`;
           if (heroContent.current) {
-            heroContent.current.style.transform = `translate3d(0, ${y * 0.18}px, 0)`;
-            heroContent.current.style.opacity = `${Math.max(1 - y / (window.innerHeight * 0.7), 0)}`;
+            heroContent.current.style.transform = `translate3d(0, ${y * 0.15}px, 0)`;
+            heroContent.current.style.opacity = `${Math.max(1 - y / (window.innerHeight * 0.75), 0)}`;
           }
         }
       });
@@ -326,245 +209,296 @@ export default function AboutClient() {
   }, []);
 
   return (
-    <div className="relative bg-white text-zinc-900 font-inter overflow-x-clip">
-      {/* Scroll progress bar (above navbar) */}
+    <div className="relative bg-[#fdfcf9] text-zinc-900 font-outfit overflow-x-clip min-h-screen flex flex-col justify-between">
+      {/* Scroll progress bar */}
       <div className="fixed top-0 left-0 right-0 z-[60] h-[3px] bg-transparent">
         <div
-          className="h-full bg-zinc-950 origin-left transition-transform duration-75"
+          className="h-full bg-gradient-to-r from-[#7b0323] to-[#d4af37] origin-left transition-transform duration-75"
           style={{ transform: `scaleX(${progress})` }}
         />
       </div>
 
-      {/* ===================== HERO ===================== */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-        {/* soft light gradient base */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,#f4f4f5_0%,#fafafa_50%,#ffffff_100%)]" />
+      <div className="flex-grow">
+        {/* ===================== HERO SECTION ===================== */}
+        <section className="relative min-h-[85vh] flex items-center overflow-hidden border-b border-zinc-200/40">
+          {/* soft light gradient base */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(123,3,35,0.02)_0%,rgba(253,252,249,0.5)_60%,#fdfcf9_100%)]" />
 
-        {/* faint tech grid */}
-        <div
-          ref={gridRef}
-          className="absolute inset-0 animate-grid opacity-60 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_72%)]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(9,9,11,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(9,9,11,0.03) 1px, transparent 1px)",
-            backgroundSize: "56px 56px",
-          }}
-        />
+          {/* faint grid */}
+          <div
+            ref={gridRef}
+            className="absolute inset-0 animate-grid opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_72%)]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(123,3,35,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(123,3,35,0.04) 1px, transparent 1px)",
+              backgroundSize: "64px 64px",
+            }}
+          />
 
-        {/* pastel aurora blobs */}
-        <div
-          ref={blob1}
-          className="absolute -top-32 -left-24 w-[40rem] h-[40rem] rounded-full bg-zinc-200/20 blur-[130px] animate-aurora pointer-events-none"
-        />
-        <div
-          ref={blob2}
-          className="absolute top-1/4 -right-32 w-[36rem] h-[36rem] rounded-full bg-zinc-100/35 blur-[140px] animate-aurora-slow pointer-events-none"
-        />
-        <div className="absolute bottom-0 left-1/3 w-[28rem] h-[28rem] rounded-full bg-zinc-100/20 blur-[120px] animate-float-slow pointer-events-none" />
+          {/* luxury ambient color glows */}
+          <div
+            ref={blob1}
+            className="absolute -top-32 -left-24 w-[35rem] h-[35rem] rounded-full bg-[#7b0323]/5 blur-[120px] animate-aurora pointer-events-none"
+          />
+          <div
+            ref={blob2}
+            className="absolute top-1/4 -right-32 w-[30rem] h-[30rem] rounded-full bg-[#d4af37]/5 blur-[130px] animate-aurora-slow pointer-events-none"
+          />
 
-        <ParticleField />
+          <ParticleField />
 
-        <div ref={heroContent} className="relative z-10 max-w-5xl mx-auto px-6 md:px-8 w-full pt-28">
-          <nav className="mb-8 text-[10px] font-black tracking-[0.25em] text-zinc-400 uppercase">
-            <Link href="/" className="hover:text-zinc-900 transition-colors">HOME</Link>
-            <span className="mx-2.5 text-zinc-300">/</span>
-            <span className="text-zinc-950 font-bold">ABOUT US</span>
-          </nav>
+          <div ref={heroContent} className="relative z-10 max-w-5xl mx-auto px-6 md:px-8 w-full pt-32 pb-20 text-left">
+            <nav className="mb-8 text-[10px] font-black tracking-[0.25em] text-[#7b0323] uppercase">
+              <Link href="/" className="hover:text-[#d4af37] transition-colors duration-300">HOME</Link>
+              <span className="mx-2.5 text-zinc-300">/</span>
+              <span className="text-zinc-500">OUR STORY</span>
+            </nav>
 
-          <div className="inline-flex items-center gap-2 mb-7 rounded-full border border-zinc-200 bg-white/80 backdrop-blur-md px-4 py-1.5 shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-glow" />
-            <span className="text-[10px] font-bold tracking-[0.22em] uppercase text-zinc-600">
-              Curated online store · Sri Lanka
-            </span>
+            <div className="inline-flex items-center gap-2 mb-6 rounded-full border border-[#7b0323]/10 bg-white/75 backdrop-blur-md px-4 py-1.5 shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#7b0323] animate-glow" />
+              <span className="text-[10px] font-bold tracking-[0.22em] uppercase text-[#7b0323]">
+                EST. 2026 · Colombo, Sri Lanka
+              </span>
+            </div>
+
+            <h1 className="font-playfair text-4xl sm:text-6xl md:text-7xl font-normal tracking-tight leading-[1.08] mb-8 text-zinc-955">
+              The Details That <br />
+              <span className="font-extrabold italic bg-gradient-to-r from-[#7b0323] via-[#d4af37] to-[#7b0323] bg-clip-text text-transparent">
+                Define Confidence
+              </span>
+            </h1>
+
+            <p className="text-zinc-600 text-base md:text-lg font-medium max-w-3xl leading-relaxed font-outfit border-l-4 border-[#7b0323] pl-6 py-2 bg-[#7b0323]/[0.01] rounded-r-xl">
+              FRANLEY is a Sri Lankan men’s accessories brand built for the modern gentleman. We focus on timeless essentials—neckties, cufflinks, belts, wallets and more—designed to elevate your everyday style with a clean, premium finish.
+            </p>
+
+            <div className="mt-12 flex flex-wrap items-center gap-4">
+              <Link
+                href="/shop"
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-lg bg-[#7b0323] hover:bg-[#8e1534] px-8 py-4 text-xs font-black tracking-widest text-white transition-all duration-300 shadow-md shadow-[#7b0323]/15 active:scale-[0.97] border border-[#d4af37]/20"
+              >
+                <span className="card-shine absolute inset-0 -translate-x-[130%] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                <span className="relative">BROWSE COLLECTIONS</span>
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 hover:border-[#7b0323]/30 bg-white px-8 py-4 text-xs font-black tracking-widest text-zinc-800 transition-colors duration-300"
+              >
+                GET IN TOUCH
+              </Link>
+            </div>
           </div>
 
-          <h1 className="font-inter text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1] mb-7 text-zinc-950">
-            Your store for{" "}
-            <br className="hidden md:block" />
-            <span className="animate-gradient-text bg-gradient-to-r from-zinc-950 via-zinc-800 to-zinc-650 bg-clip-text text-transparent">
-              Electronics &amp; Lifestyle
-            </span>
-          </h1>
-
-          <p className="text-zinc-500 text-lg md:text-xl font-medium tracking-wide max-w-2xl leading-relaxed">
-            A handpicked online store bringing you the best in tech and lifestyle —
-            fairly priced and delivered to your door across Sri Lanka.
-          </p>
-
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Link
-              href="/shop"
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-zinc-950 px-8 py-3.5 text-xs font-black tracking-widest text-white transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-zinc-900/10"
-            >
-              <span className="card-shine absolute inset-0 -translate-x-[130%] bg-gradient-to-r from-transparent via-white/25 to-transparent" />
-              <span className="relative">EXPLORE THE SHOP</span>
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white px-8 py-3.5 text-xs font-black tracking-widest text-zinc-850 transition-colors hover:border-zinc-400 hover:text-zinc-950"
-            >
-              GET IN TOUCH
-            </Link>
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 opacity-60">
+            <span className="text-[8px] font-bold tracking-[0.3em] uppercase text-zinc-400">Scroll</span>
+            <svg className="w-4 h-4 text-[#7b0323] animate-bob" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
           </div>
-        </div>
+        </section>
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
-          <span className="text-[9px] font-bold tracking-[0.3em] uppercase text-zinc-400">Scroll</span>
-          <svg className="w-5 h-5 text-zinc-400 animate-bob" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-        </div>
-      </section>
-
-      {/* ===================== STATS ===================== */}
-      <section className="relative border-y border-zinc-150 bg-zinc-50/60">
-        <div className="max-w-6xl mx-auto px-6 md:px-8 grid grid-cols-2 md:grid-cols-4 divide-x divide-zinc-200">
-          {STATS.map((s, i) => (
-            <Reveal key={s.label} variant="up" delay={i * 120}>
-              <div className="px-4 py-10 text-center">
-                <div className="font-inter text-4xl md:text-5xl font-extrabold bg-gradient-to-br from-zinc-950 to-zinc-600 bg-clip-text text-transparent">
-                  <Counter to={s.to} suffix={s.suffix} />
-                </div>
-                <div className="mt-3 text-[10px] md:text-[11px] font-bold tracking-[0.18em] uppercase text-zinc-500">
-                  {s.label}
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ===================== OUR STORY ===================== */}
-      <section className="relative max-w-5xl mx-auto px-6 md:px-8 py-24 md:py-32">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14">
-          <div className="md:col-span-4">
-            <Reveal variant="left">
-              <div className="md:sticky md:top-28">
-                <span className="text-[11px] font-black tracking-[0.25em] uppercase text-zinc-500">/ 01</span>
-                <h2 className="font-inter text-2xl md:text-3xl font-extrabold tracking-tight mt-3 leading-tight text-zinc-950">
-                  Our Story
-                </h2>
-              </div>
-            </Reveal>
-          </div>
-          <div className="md:col-span-8 flex flex-col gap-6 text-zinc-600 leading-relaxed font-medium text-base md:text-lg">
-            <Reveal variant="up" delay={80}>
-              <p>
-                Franley started with a simple idea: make it easy to find quality electronics and lifestyle
-                products in Sri Lanka. Instead of hopping between random sites and sellers, you get one clean,
-                trustworthy store with everything in one place.
-              </p>
-            </Reveal>
-            <Reveal variant="up" delay={180}>
-              <p>
-                Think of us as your shortcut to the good stuff. We search for products that look great, work
-                well, and are worth the money — then bring them straight to your door with fast, friendly
-                delivery and easy payment.
-              </p>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* ===================== WHY SHOP WITH US ===================== */}
-      <section className="relative max-w-6xl mx-auto px-6 md:px-8 pb-24 md:pb-32">
-        <Reveal variant="up">
-          <div className="mb-12 border-t border-zinc-150 pt-16">
-            <span className="text-[11px] font-black tracking-[0.25em] uppercase text-zinc-500">/ 02</span>
-            <h2 className="font-inter text-3xl md:text-4xl font-extrabold tracking-tight mt-3 text-zinc-950">
-              Why Shop With Us
-            </h2>
-          </div>
-        </Reveal>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {BENEFITS.map((p, i) => (
-            <Reveal key={p.title} variant="scale" delay={i * 140}>
-              <div className="group relative h-full overflow-hidden rounded-3xl border border-zinc-200/80 bg-white p-7 shadow-[0_4px_20px_-12px_rgba(9,9,11,0.08)] transition-all duration-500 hover:border-zinc-350 hover:shadow-[0_20px_50px_-18px_rgba(9,9,11,0.12)] hover:-translate-y-1.5">
-                <div className="absolute -top-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-400/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="absolute -inset-px rounded-3xl bg-[radial-gradient(circle_at_top,rgba(24,24,27,0.03),transparent_60%)] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                <span className="card-shine absolute top-0 bottom-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-zinc-200/20 to-transparent pointer-events-none" />
-
-                <div className="relative flex items-center justify-between mb-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 text-zinc-800">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      {p.icon}
+        {/* ===================== TRUST PILLARS BAR ===================== */}
+        <section className="relative bg-white border-b border-zinc-200/50 py-8 shadow-sm">
+          <div className="max-w-5xl mx-auto px-6 md:px-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+              {[
+                {
+                  label: "FAST ISLANDWIDE DELIVERY",
+                  desc: "Dispatched promptly across Sri Lanka",
+                  icon: (
+                    <svg className="w-5 h-5 text-[#7b0323]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                     </svg>
+                  ),
+                },
+                {
+                  label: "SECURE CHECKOUT",
+                  desc: "100% encrypted & secure payment options",
+                  icon: (
+                    <svg className="w-5 h-5 text-[#7b0323]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: "WHATSAPP SUPPORT",
+                  desc: "Dedicated personal assistant styling guidance",
+                  icon: (
+                    <svg className="w-5 h-5 text-[#7b0323]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                  ),
+                },
+              ].map((item, i) => (
+                <Reveal key={item.label} variant="up" delay={i * 100}>
+                  <div className="flex items-center gap-4 justify-center md:justify-start px-4">
+                    <div className="w-10 h-10 rounded-full bg-[#7b0323]/5 flex items-center justify-center border border-[#7b0323]/10 shrink-0">
+                      {item.icon}
+                    </div>
+                    <div className="text-left">
+                      <h4 className="text-[10px] font-black tracking-widest text-[#7b0323] uppercase">
+                        {item.label}
+                      </h4>
+                      <p className="text-[11px] text-zinc-500 font-semibold font-outfit mt-0.5">
+                        {item.desc}
+                      </p>
+                    </div>
                   </div>
-                  <span className="font-inter text-3xl font-extrabold text-zinc-100">{p.n}</span>
-                </div>
-                <h3 className="relative font-inter text-lg font-bold tracking-tight text-zinc-950 mb-3">
-                  {p.title}
-                </h3>
-                <p className="relative text-sm text-zinc-500 leading-relaxed font-medium">{p.desc}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ===================== WHAT WE OFFER ===================== */}
-      <section className="relative max-w-6xl mx-auto px-6 md:px-8 pb-24 md:pb-32">
-        <Reveal variant="up">
-          <div className="mb-12 border-t border-zinc-150 pt-16">
-            <span className="text-[11px] font-black tracking-[0.25em] uppercase text-zinc-500">/ 03</span>
-            <h2 className="font-inter text-3xl md:text-4xl font-extrabold tracking-tight mt-3 text-zinc-950">
-              What We Offer
-            </h2>
+                </Reveal>
+              ))}
+            </div>
           </div>
-        </Reveal>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {CATEGORIES.map((m, i) => (
-            <Reveal key={m.tag} variant={i % 2 === 0 ? "left" : "right"} delay={(i % 2) * 120}>
-              <div className="group relative overflow-hidden rounded-2xl border border-zinc-200/80 bg-gradient-to-br from-zinc-50 to-white p-7 shadow-sm transition-all duration-500 hover:border-zinc-350 hover:shadow-[0_18px_44px_-20px_rgba(9,9,11,0.08)]">
-                <div className="flex items-start gap-4">
-                  <span className="mt-1 font-inter text-xs font-bold text-zinc-400">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h3 className="text-xs font-bold tracking-wider uppercase text-zinc-850 mb-2.5">
-                      {m.tag}
-                    </h3>
-                    <p className="text-sm text-zinc-500 leading-relaxed font-medium">{m.desc}</p>
-                  </div>
-                </div>
-                <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-zinc-855 transition-all duration-700 group-hover:w-full" />
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+        </section>
 
-      {/* ===================== CTA ===================== */}
-      <section className="relative max-w-5xl mx-auto px-6 md:px-8 pb-28">
-        <Reveal variant="scale">
-          <div className="group relative overflow-hidden rounded-[2rem] p-[1.5px] shadow-[0_30px_70px_-30px_rgba(9,9,11,0.15)]">
-            <div className="absolute inset-[-100%] animate-spin-slow bg-[conic-gradient(from_0deg,transparent_0deg,rgba(9,9,11,0.25)_60deg,transparent_120deg,transparent_240deg,rgba(113,113,122,0.2)_300deg,transparent_360deg)]" />
-            <div className="relative rounded-[2rem] bg-white px-8 py-14 md:px-16 md:py-20 text-center overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(9,9,11,0.03),transparent_55%)] pointer-events-none" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(24,24,27,0.02),transparent_55%)] pointer-events-none" />
-              <h2 className="relative z-10 font-inter text-3xl md:text-4xl font-extrabold tracking-tight mb-5 leading-tight text-zinc-950">
-                Ready to Upgrade
-                <br className="hidden md:block" /> Your Everyday?
-              </h2>
-              <p className="relative z-10 text-zinc-500 text-sm md:text-base max-w-xl mx-auto mb-9 font-medium leading-relaxed">
-                Browse our handpicked collection of electronics and lifestyle gear — with island-wide delivery
-                and cash on delivery available.
-              </p>
-              <div className="relative z-10">
-                <Link
-                  href="/shop"
-                  className="inline-flex items-center gap-2 rounded-full bg-zinc-950 px-9 py-4 text-xs font-black tracking-widest text-white shadow-lg shadow-zinc-950/10 transition-transform hover:scale-105 active:scale-95"
-                >
-                  BROWSE THE SHOP
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
+        {/* ===================== SECTION 1: PHILOSOPHY & DETAILS ===================== */}
+        <section className="relative max-w-5xl mx-auto px-6 md:px-8 py-24 md:py-32 border-b border-zinc-200/30">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16">
+            <div className="md:col-span-4">
+              <Reveal variant="left">
+                <div className="md:sticky md:top-28 text-left">
+                  <span className="text-[10px] font-black tracking-[0.25em] text-[#7b0323] uppercase block mb-2 font-outfit">
+                    / OUR PHILOSOPHY
+                  </span>
+                  <h2 className="font-playfair text-3xl md:text-4xl font-bold tracking-tight leading-tight text-zinc-950">
+                    Confidence is in the Details
+                  </h2>
+                </div>
+              </Reveal>
+            </div>
+            <div className="md:col-span-8 text-left flex flex-col gap-8 text-zinc-600 leading-relaxed font-medium text-sm md:text-[15px] font-outfit">
+              <Reveal variant="up" delay={100}>
+                <p className="text-zinc-800 font-semibold text-base md:text-lg mb-2">
+                  That’s why we pay attention to fabric feel, craftsmanship, and presentation—so every piece you wear feels refined, purposeful, and worth it.
+                </p>
+              </Reveal>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4">
+                {[
+                  {
+                    num: "01",
+                    title: "Fabric Feel",
+                    desc: "Hand-selected mulberry silk, high-density weaves, and tactile linings selected for premium weight, shape retention, and elegant drapes.",
+                  },
+                  {
+                    num: "02",
+                    title: "Craftsmanship",
+                    desc: "Precision stitching, luxury tipping details, and anti-slip structures engineered to stay neat and polished from morning to night.",
+                  },
+                  {
+                    num: "03",
+                    title: "Presentation",
+                    desc: "Bespoke collector boxes, secure protective layout sleeves, and premium gift-wrapped packages designed to impress from the first touch.",
+                  },
+                ].map((val, idx) => (
+                  <Reveal key={val.title} variant="up" delay={150 + idx * 100}>
+                    <div className="bg-[#faf9f6] border border-zinc-200/50 p-5 rounded-2xl relative group hover:border-[#d4af37]/30 transition-all duration-300">
+                      <span className="text-[10px] font-black text-[#7b0323]/50 block mb-3 font-outfit">{val.num}</span>
+                      <h4 className="text-xs font-black uppercase tracking-widest text-zinc-900 mb-2 font-outfit">{val.title}</h4>
+                      <p className="text-[11px] text-zinc-500 leading-relaxed font-medium">{val.desc}</p>
+                    </div>
+                  </Reveal>
+                ))}
               </div>
             </div>
           </div>
-        </Reveal>
-      </section>
+        </section>
+
+        {/* ===================== SECTION 2: DRESS SHARP WITH EASE ===================== */}
+        <section className="relative max-w-5xl mx-auto px-6 md:px-8 py-24 md:py-32">
+          <Reveal variant="up">
+            <div className="mb-14 text-left">
+              <span className="text-[10px] font-black tracking-[0.25em] text-[#7b0323] uppercase block mb-2 font-outfit">
+                / THE DRESS CODE
+              </span>
+              <h2 className="font-playfair text-3xl md:text-5xl font-bold tracking-tight text-zinc-950">
+                Dress Sharp With Ease
+              </h2>
+              <p className="text-zinc-500 text-xs sm:text-sm font-semibold tracking-wide max-w-xl leading-relaxed mt-2 font-outfit">
+                Timeless essentials designed to serve your life's milestone moments.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                num: "I",
+                title: "Work & Executive",
+                desc: "Establish command and showcase attention to detail in boardrooms and business events with rich textures, solid coordinates, and secure leather setups.",
+                accent: "border-[#7b0323]/20",
+              },
+              {
+                num: "II",
+                title: "Weddings & Galas",
+                desc: "Crafted for grand entries and groom/groomsmen ensembles. Features high-shine floral jacquards, classic black-tie ascots, and polished metallic cufflinks.",
+                accent: "border-[#d4af37]/35",
+              },
+              {
+                num: "III",
+                title: "Luxury Gifting",
+                desc: "Leave a lasting mark. Our custom packaging, luxury signature boxes, and matching tie-and-cufflink gift sets represent the ultimate gesture of appreciation.",
+                accent: "border-[#7b0323]/20",
+              },
+            ].map((p, i) => (
+              <Reveal key={p.title} variant="scale" delay={i * 120}>
+                <div className={`group relative h-full overflow-hidden rounded-2xl border ${p.accent} bg-white p-6 md:p-8 flex flex-col justify-between transition-all duration-500 hover:shadow-xl hover:-translate-y-1`}>
+                  <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#7b0323]/50 via-[#d4af37] to-[#7b0323]/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  <div>
+                    <div className="flex items-center justify-between mb-8">
+                      <span className="font-playfair text-2xl font-bold italic text-[#7b0323]">{p.num}</span>
+                      <span className="text-[9px] font-black tracking-widest text-zinc-300 uppercase font-outfit">FRANLEY LUXE</span>
+                    </div>
+                    <h3 className="font-playfair text-lg font-bold text-zinc-950 mb-3 tracking-tight">
+                      {p.title}
+                    </h3>
+                    <p className="text-xs text-zinc-500 leading-relaxed font-medium font-outfit">{p.desc}</p>
+                  </div>
+                  <div className="flex items-center gap-1 text-[9px] font-black text-zinc-950 uppercase tracking-widest border-t border-zinc-200/50 pt-5 mt-8 group-hover:text-[#7b0323] transition-colors duration-300 font-outfit">
+                    <span>EXPLORE ESSENTIALS</span>
+                    <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        {/* ===================== SECTION 3: CALL TO ACTION ===================== */}
+        <section className="relative max-w-5xl mx-auto px-6 md:px-8 pb-28">
+          <Reveal variant="scale">
+            <div className="bg-[#0c0c0c] border border-zinc-900 rounded-[2.5rem] p-8 md:p-16 text-center flex flex-col items-center justify-center relative overflow-hidden shadow-2xl">
+              {/* elegant mesh light glow */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#7b0323]/10 via-transparent to-[#d4af37]/10 opacity-70 pointer-events-none" />
+              
+              <div className="relative z-10 max-w-xl flex flex-col items-center gap-5">
+                <span className="text-[9px] font-black tracking-[0.3em] text-[#d4af37] uppercase font-outfit">
+                  THE SARTORIAL BLUEPRINT
+                </span>
+                <h2 className="font-playfair text-2xl md:text-4xl font-normal text-white tracking-tight leading-tight">
+                  Step Into the World of <span className="italic">Franley</span>
+                </h2>
+                <p className="text-white/80 text-xs sm:text-sm leading-relaxed font-outfit max-w-md">
+                  Upgrade your daily style, discover handcrafted mulberry silk ties, designer cufflinks, and luxury leather accessories.
+                </p>
+                <div className="mt-4">
+                  <Link
+                    href="/shop"
+                    className="inline-flex items-center gap-2.5 rounded-lg bg-[#7b0323] hover:bg-[#8e1534] text-white border border-[#d4af37]/20 hover:border-[#d4af37]/50 px-8 py-4 text-xs font-black tracking-[0.2em] uppercase transition-all duration-300 shadow-md shadow-[#7b0323]/15 active:scale-[0.98]"
+                  >
+                    <span>BROWSE THE SHOP</span>
+                    <svg className="w-4.5 h-4.5 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </section>
+      </div>
 
       <Footer />
     </div>

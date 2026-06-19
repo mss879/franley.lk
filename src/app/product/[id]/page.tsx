@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const titleText = product.metaTitle || `${product.name} | Franley Premium Creator Gear`;
+  const titleText = product.metaTitle || `${product.name} | Franley Premium Gentlemen Accessories`;
 
   return {
     title: titleText,

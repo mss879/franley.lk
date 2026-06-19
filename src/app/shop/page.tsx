@@ -37,11 +37,11 @@ async function getProducts() {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.franley.lk"),
-  title: "Shop All Essentials | Franley Premium Creator Workspace",
-  description: "Browse our curated range of tactile mechanical keyboards, smart desktop chargers, studio monitor speakers, and workspace lighting.",
+  title: "Shop Timeless Essentials | Premium Men's Accessories | Franley",
+  description: "Browse our curated collection of handcrafted mulberry silk neckties, designer cufflinks, classic pocket squares, belts, and luxury menswear gift sets.",
   openGraph: {
-    title: "Shop All Essentials | Franley Premium Creator Workspace",
-    description: "Browse our curated range of tactile mechanical keyboards, smart desktop chargers, studio monitor speakers, and workspace lighting.",
+    title: "Shop Timeless Essentials | Premium Men's Accessories | Franley",
+    description: "Browse our curated collection of handcrafted mulberry silk neckties, designer cufflinks, classic pocket squares, belts, and luxury menswear gift sets.",
     url: "https://www.franley.lk/shop",
     images: ["/banner_1.webp"],
   },
@@ -53,9 +53,9 @@ export default async function ShopPage() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "Shop All Essentials | Franley",
+    "name": "Shop Timeless Essentials | Franley",
     "url": "https://www.franley.lk/shop",
-    "description": "Browse our curated range of tactile mechanical keyboards, smart desktop chargers, studio monitor speakers, and workspace lighting.",
+    "description": "Browse our curated collection of handcrafted mulberry silk neckties, designer cufflinks, classic pocket squares, belts, and luxury menswear gift sets.",
     "mainEntity": {
       "@type": "ItemList",
       "numberOfItems": products.length,
@@ -75,7 +75,7 @@ export default async function ShopPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
       <Suspense fallback={
-        <div className="min-h-screen bg-slate-50/50 flex items-center justify-center font-outfit">
+        <div className="min-h-screen bg-[#fdfcf9] flex items-center justify-center font-outfit">
           <div className="flex flex-col items-center gap-3">
             <div className="w-8 h-8 border-4 border-[#7b0323]/20 border-t-[#7b0323] rounded-full animate-spin" />
             <span className="text-[10px] font-bold tracking-widest uppercase text-zinc-400">Loading catalog...</span>

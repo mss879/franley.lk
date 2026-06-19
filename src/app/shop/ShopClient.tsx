@@ -378,112 +378,48 @@ function ShopContent({ initialProducts }: { initialProducts?: Product[] }) {
     : null;
 
   return (
-    <div className="w-full h-screen overflow-y-auto scrollbar-thin bg-slate-50/50 flex flex-col font-outfit select-none relative pb-28 md:pb-16">
+    <div className="w-full min-h-screen bg-[#fdfcf9] flex flex-col font-outfit select-none relative pb-28 md:pb-16">
       
-      {/* Header Nav */}
-      <header className="sticky top-0 bg-white/70 backdrop-blur-xl border-b border-zinc-200/50 px-6 lg:px-12 py-4 flex items-center justify-between z-40 relative">
-        <Link href="/" className="flex items-center gap-1.5 text-zinc-900 hover:text-[#7b0323] transition-colors uppercase font-bold text-[10px] sm:text-xs tracking-widest group">
-          <svg className="w-4 h-4 transform group-hover:-translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
-          </svg>
-          STOREFRONT
-        </Link>
-
-        {/* Center Logo */}
-        <Link href="/" className="w-32 h-8 block hover:opacity-75 transition-opacity relative">
-          <Image src="/franley_logo_no_text_transparent.png" alt="Franley Logo" fill sizes="128px" style={{ objectFit: "contain" }} />
-        </Link>
-
-        {/* Action Buttons: Cart trigger */}
-        <div className="hidden md:flex items-center gap-4">
-          <button 
-            onClick={() => setIsCartOpen(true)}
-            className="relative border-0 bg-transparent text-zinc-950 hover:text-zinc-700 hover:scale-110 active:scale-95 transition-all duration-200 flex items-center justify-center cursor-pointer p-1"
-          >
-            <svg className="w-8 h-8 sm:w-9 sm:h-9" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-              <circle cx="8" cy="21" r="1"/>
-              <circle cx="19" cy="21" r="1"/>
-              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-            </svg>
-            {cart.reduce((sum, item) => sum + item.quantity, 0) > 0 && (
-              <span className={`absolute -top-1 -right-1 bg-[#7b0323] text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-md border border-white transition-all duration-300 ${
-                cartAnimate ? "animate-bounce scale-110 shadow-[0_0_12px_rgba(123,3,35,0.5)]" : ""
-              }`}>
-                {cart.reduce((sum, item) => sum + item.quantity, 0)}
-              </span>
-            )}
-          </button>
-        </div>
-      </header>
-
       {/* Main Catalog View Container */}
-      <main className="flex-grow max-w-7xl w-full mx-auto px-6 py-8 md:py-12 z-10 flex flex-col gap-6 md:gap-8">
+      <main className="flex-grow max-w-7xl w-full mx-auto px-6 pt-24 md:pt-32 pb-8 md:pb-12 z-10 flex flex-col gap-6 md:gap-8">
         
-        {/* Page Banner Title */}
-        {/* Desktop Banner */}
-        <div className="hidden md:block relative rounded-[2rem] overflow-hidden bg-gradient-to-r from-[#7b0323] via-[#5e021a] to-slate-900 px-8 py-10 md:py-14 text-left shadow-lg border border-[#7b0323]/20">
-          <div className="absolute top-0 right-0 w-[400px] h-full bg-[#7b0323]/10 blur-[120px] rounded-full pointer-events-none" />
-          <div className="relative z-10 max-w-2xl flex flex-col gap-2">
-            <span className="text-[10px] font-bold tracking-[0.25em] text-[#7b0323]/60 uppercase">
-              {activeCollectionObj 
-                ? `COLLECTION: ${activeCollectionObj.name}` 
-                : selectedCollection 
-                  ? `COLLECTION: ${selectedCollection}` 
-                  : "CREATOR HUB CATALOG"}
-            </span>
-            <h1 className="text-3xl md:text-5xl font-extrabold text-white font-syne uppercase tracking-tight leading-tight">
-              {activeCollectionObj 
-                ? activeCollectionObj.name 
-                : selectedCollection 
-                  ? selectedCollection 
-                  : "Elevate Your Workspace"}
-            </h1>
-            <p className="text-[#d4af37]/80 text-xs sm:text-sm font-medium leading-relaxed mt-1">
-              {activeCollectionObj 
-                ? activeCollectionObj.description 
-                : selectedCollection 
-                  ? `Browse our selected products in the ${selectedCollection} collection.` 
-                  : "Browse our professional range of tactile gear, high-fidelity audio systems, ambient desk lights, and smart travel configurations."}
-            </p>
-          </div>
-        </div>
-
-        {/* Mobile Simple Banner */}
-        <div className="block md:hidden text-left px-2 py-1 flex flex-col gap-1">
-          <span className="text-[9px] font-extrabold tracking-widest text-[#7b0323] uppercase">
+        {/* Editorial Page Header */}
+        <header className="mb-6 md:mb-10 text-left border-b border-zinc-200/50 pb-8 relative">
+          <span className="text-[10px] font-extrabold tracking-[0.25em] text-[#7b0323] uppercase block mb-3 font-outfit">
             {activeCollectionObj 
-              ? `Collection` 
+              ? `COLLECTION: ${activeCollectionObj.name.toUpperCase()}` 
               : selectedCollection 
-                ? `Collection` 
-                : "Catalog"}
+                ? `COLLECTION: ${selectedCollection.toUpperCase()}` 
+                : "THE FRANLEY COLLECTION"}
           </span>
-          <h1 className="text-2xl font-black text-zinc-950 font-outfit uppercase tracking-tight leading-tight">
+          <h1 className="font-playfair text-4xl md:text-6xl lg:text-7xl font-normal text-zinc-950 tracking-tight leading-[1.05] mb-6">
             {activeCollectionObj 
               ? activeCollectionObj.name 
               : selectedCollection 
                 ? selectedCollection 
-                : "Elevate Your Workspace"}
+                : <>Sartorial <span className="italic font-normal">Storefront</span></>}
           </h1>
-          <p className="text-zinc-500 text-xs leading-relaxed font-medium">
+          <p className="text-zinc-650 text-sm md:text-[15px] font-medium tracking-wide max-w-2xl leading-relaxed font-outfit">
             {activeCollectionObj 
               ? activeCollectionObj.description 
               : selectedCollection 
                 ? `Browse our selected products in the ${selectedCollection} collection.` 
-                : "Browse our curated range of handcrafted silk neckties, bespoke cufflinks, and premium gentlemen accessories."}
+                : "Discover our exclusive collection of handcrafted mulberry silk neckties, designer cufflinks, premium leather belts, and luxury gift sets curated for the modern gentleman."}
           </p>
-        </div>
+          <div className="absolute bottom-0 left-0 w-24 h-[3px] bg-[#d4af37]" />
+        </header>
 
         {/* Search & Sort Panel */}
-        <div className="w-full bg-white border border-zinc-200/60 rounded-3xl p-4 flex flex-col sm:flex-row gap-4 items-center justify-between shadow-xs">
+        <div className="w-full bg-white/80 backdrop-blur-md border border-zinc-200/60 rounded-[1.5rem] p-4 flex flex-col sm:flex-row gap-4 items-center justify-between shadow-sm">
           
           {/* Local Search Input */}
-          <div className="relative w-full sm:max-w-md flex items-center bg-zinc-50 border border-zinc-200/80 rounded-full px-4 py-2 focus-within:bg-white focus-within:border-[#d4af37]/65 transition-all duration-350 shadow-inner">
+          <div className="relative w-full sm:max-w-md flex items-center bg-zinc-50/50 border border-zinc-200/80 rounded-full px-4 py-2 focus-within:bg-white focus-within:border-[#d4af37]/65 transition-all duration-350 shadow-inner">
             <svg className="w-4 h-4 text-[#7b0323] shrink-0 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input 
               type="text" 
-              placeholder="Search gear, tags, names..."
+              placeholder="Search accessories, silk ties, cufflinks..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-transparent text-xs sm:text-sm font-semibold text-zinc-950 placeholder-zinc-400 focus:outline-none"
@@ -701,7 +637,7 @@ function ShopContent({ initialProducts }: { initialProducts?: Product[] }) {
                   return (
                     <div 
                       key={product.id}
-                      className="group bg-white border border-zinc-200/60 hover:border-[#c1a8f6] hover:shadow-[0_12px_24px_rgba(139,92,246,0.08)] rounded-[2.2rem] p-4 flex flex-col justify-between transition-all duration-350 transform hover:-translate-y-1 relative"
+                      className="group bg-white border border-zinc-200/60 hover:border-[#d4af37]/60 hover:shadow-[0_12px_24px_rgba(123,3,35,0.04)] rounded-[2.2rem] p-4 flex flex-col justify-between transition-all duration-350 transform hover:-translate-y-1 relative"
                     >
                       {/* Badge and Quick Add actions */}
                       <div className="flex justify-between items-center z-10 relative">
@@ -740,7 +676,7 @@ function ShopContent({ initialProducts }: { initialProducts?: Product[] }) {
                             onClick={() => {
                               router.push(`/product/${product.id}`);
                             }}
-                            className="text-sm font-extrabold text-zinc-950 hover:text-[#7b0323] transition-colors tracking-tight font-outfit line-clamp-1 cursor-pointer"
+                            className="text-base font-bold text-zinc-950 hover:text-[#7b0323] transition-colors tracking-tight font-playfair line-clamp-1 cursor-pointer"
                           >
                             {product.name}
                           </h3>
@@ -1235,7 +1171,7 @@ function ShopContent({ initialProducts }: { initialProducts?: Product[] }) {
                   </div>
                   <h3 className="text-sm font-extrabold text-zinc-950 uppercase tracking-widest font-outfit">Your cart is empty</h3>
                   <p className="text-xs text-zinc-500 text-center max-w-[240px] leading-relaxed font-medium">
-                    Looks like you haven't added any products to your setup yet.
+                    Looks like you haven't added any products to your cart yet.
                   </p>
                   <button
                     onClick={() => setIsCartOpen(false)}

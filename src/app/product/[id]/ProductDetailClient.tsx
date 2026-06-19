@@ -139,45 +139,10 @@ export default function ProductDetailClient({ product }: { product: Product }) {
   );
 
   return (
-    <div className="min-h-screen bg-zinc-50/50 flex flex-col font-outfit select-none relative pb-24 md:pb-0">
-
-      {/* Sticky Header Nav */}
-      <header className="sticky top-0 bg-white/70 backdrop-blur-xl border-b border-zinc-200/50 px-6 lg:px-12 py-4 flex items-center justify-between z-45 relative">
-        <Link href="/" className="flex items-center gap-1.5 text-zinc-900 hover:text-[#7b0323] transition-colors uppercase font-bold text-[10px] sm:text-xs tracking-widest group">
-          <svg className="w-4 h-4 transform group-hover:-translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
-          </svg>
-          STOREFRONT
-        </Link>
-
-        {/* Center Logo */}
-        <Link href="/" className="w-32 h-8 block hover:opacity-75 transition-opacity relative">
-          <Image src="/franley_logo_no_text_transparent.png" alt="Franley Logo" fill sizes="128px" style={{ objectFit: "contain" }} />
-        </Link>
-
-        {/* Cart Button */}
-        <button 
-          onClick={() => setIsCartOpen(true)}
-          className="hidden md:flex relative border-0 bg-transparent text-zinc-950 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center cursor-pointer p-1"
-        >
-          <svg className="w-8 h-8 sm:w-9 sm:h-9" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-            <circle cx="8" cy="21" r="1"/>
-            <circle cx="19" cy="21" r="1"/>
-            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-          </svg>
-          {totalCartItems > 0 && (
-            <span className={`absolute -top-1 -right-1 bg-[#7b0323] text-white text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow border border-white transition-all duration-300 ${
-              cartAnimate ? "animate-bounce scale-110 shadow-[0_0_8px_rgba(123,3,35,0.5)]" : ""
-            }`}>
-              {totalCartItems}
-            </span>
-          )}
-        </button>
-        <div className="w-8 md:hidden pointer-events-none" />
-      </header>
+    <div className="min-h-screen bg-[#fdfcf9] flex flex-col font-outfit select-none relative pb-24 md:pb-0">
 
       {/* Main Container */}
-      <main className="flex-grow flex items-center justify-center py-8 lg:py-16 px-6 relative z-10">
+      <main className="flex-grow flex items-center justify-center pt-24 md:pt-32 pb-8 md:pb-16 px-6 relative z-10">
         <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           
           {/* Left Column: Product Image Gallery (col-span-6) */}
@@ -246,7 +211,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               >
                 {product.category}
               </span>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-zinc-950 font-syne leading-none tracking-tight mb-3">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-normal text-zinc-950 font-playfair leading-tight tracking-tight mb-3">
                 {product.name}
               </h1>
               
@@ -403,7 +368,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                   </div>
                   <h3 className="text-sm font-extrabold text-zinc-950 uppercase tracking-widest font-outfit">Your cart is empty</h3>
                   <p className="text-xs text-zinc-500 text-center max-w-[240px] leading-relaxed font-medium">
-                    Looks like you haven't added any products to your setup yet.
+                    Looks like you haven't added any products to your cart yet.
                   </p>
                   <button
                     onClick={() => setIsCartOpen(false)}

@@ -14,7 +14,7 @@ export default function Footer() {
         ></div>
         
         {/* Main Card Shape Front Face */}
-        <footer className="relative bg-white/95 backdrop-blur-2xl border-[3px] sm:border-[4px] border-[#7b0323] rounded-[2.2rem] md:rounded-[3.2rem] text-zinc-600 px-6 sm:px-10 py-12 md:py-16 flex flex-col gap-10 md:gap-12 overflow-hidden shadow-[0_12px_24px_rgba(0,0,0,0.08)]">
+        <footer className="relative bg-black border-[3px] sm:border-[4px] border-[#7b0323] rounded-[2.2rem] md:rounded-[3.2rem] text-white/90 px-6 sm:px-10 py-12 md:py-16 flex flex-col gap-10 md:gap-12 overflow-hidden shadow-[0_12px_24px_rgba(0,0,0,0.15)]">
           {/* Subtle ambient light glows */}
           <div className="absolute top-0 right-1/4 w-[300px] h-[300px] bg-[#7b0323]/5 blur-[100px] rounded-full pointer-events-none" />
           <div className="absolute bottom-0 left-1/4 w-[250px] h-[250px] bg-[#d4af37]/5 blur-[90px] rounded-full pointer-events-none" />
@@ -25,7 +25,7 @@ export default function Footer() {
               <div className="flex items-center gap-2">
                 <img src="/franley_logo_no_text_transparent.png" alt="Franley Logo" className="h-8 object-contain" />
               </div>
-              <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed font-semibold font-outfit">
+              <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-medium font-outfit">
                 A curated collection of handcrafted silk neckties, bespoke cufflinks, and elevated menswear accessories designed to define the modern gentleman.
               </p>
               {/* Social Icons */}
@@ -40,7 +40,7 @@ export default function Footer() {
                     href={icon.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-xl bg-slate-50 border border-zinc-200/80 flex items-center justify-center text-zinc-500 hover:text-[#7b0323] hover:border-[#7b0323]/30 hover:bg-[#7b0323]/5 hover:shadow-[0_4px_12px_rgba(123,3,35,0.1)] transition-all duration-300 group"
+                    className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-[#d4af37] hover:border-[#7b0323]/60 hover:bg-[#7b0323]/10 hover:shadow-[0_4px_12px_rgba(123,3,35,0.05)] transition-all duration-300 group"
                     title={icon.name}
                   >
                     <svg className="w-5 h-5 fill-current" viewBox={icon.viewBox}>
@@ -53,7 +53,7 @@ export default function Footer() {
 
             {/* Column 2: Products */}
             <div className="flex flex-col gap-4">
-              <h4 className="text-[10px] font-bold tracking-[0.25em] text-zinc-400 uppercase">
+              <h4 className="text-[10px] font-bold tracking-[0.25em] text-white/40 uppercase">
                 Browse
               </h4>
               <ul className="flex flex-col gap-2.5 text-xs sm:text-sm font-semibold">
@@ -64,7 +64,7 @@ export default function Footer() {
                   { name: "New Arrivals", link: "/shop?collection=new-in" }
                 ].map((item) => (
                   <li key={item.name}>
-                    <Link href={item.link} className="text-zinc-700 hover:text-[#7b0323] transition-colors duration-200">
+                    <Link href={item.link} className="text-white/70 hover:text-[#d4af37] transition-colors duration-200">
                       {item.name}
                     </Link>
                   </li>
@@ -74,7 +74,7 @@ export default function Footer() {
 
             {/* Column 3: Support */}
             <div className="flex flex-col gap-4">
-              <h4 className="text-[10px] font-bold tracking-[0.25em] text-zinc-400 uppercase">
+              <h4 className="text-[10px] font-bold tracking-[0.25em] text-white/40 uppercase">
                 Support
               </h4>
               <ul className="flex flex-col gap-2.5 text-xs sm:text-sm font-semibold">
@@ -85,7 +85,7 @@ export default function Footer() {
                   { name: "Help & FAQs", link: "/#faq" }
                 ].map((item) => (
                   <li key={item.name}>
-                    <Link href={item.link} className="text-zinc-700 hover:text-[#7b0323] transition-colors duration-200">
+                    <Link href={item.link} className="text-white/70 hover:text-[#d4af37] transition-colors duration-200">
                       {item.name}
                     </Link>
                   </li>
@@ -95,10 +95,10 @@ export default function Footer() {
 
             {/* Column 4: Newsletter */}
             <div className="flex flex-col gap-4">
-              <h4 className="text-[10px] font-bold tracking-[0.25em] text-zinc-400 uppercase">
+              <h4 className="text-[10px] font-bold tracking-[0.25em] text-white/40 uppercase">
                 Newsletter
               </h4>
-              <p className="text-xs sm:text-sm text-zinc-500 leading-relaxed font-semibold font-outfit">
+              <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-medium font-outfit">
                 Subscribe for style guide updates, early access to new collections, and exclusive client privileges.
               </p>
               
@@ -114,13 +114,13 @@ export default function Footer() {
                 }}
                 className="flex flex-col gap-2 w-full mt-1"
               >
-                <div className="flex items-center bg-[#7b0323]/[0.02] border border-[#7b0323]/20 border-b-[3px] border-[#7b0323]/30 rounded-full px-4 py-1.5 focus-within:border-[#7b0323]/40 focus-within:bg-white transition-all duration-300 shadow-[inset_0_1px_2px_rgba(123,3,35,0.02)]">
+                <div className="flex items-center bg-zinc-900/60 border border-zinc-800 border-b-[3px] border-[#7b0323] rounded-full px-4 py-1.5 focus-within:border-zinc-700 focus-within:bg-zinc-900 transition-all duration-300 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
                   <input
                     id="newsletter-email-input-global"
                     type="email"
                     required
                     placeholder="Enter your email"
-                    className="w-full bg-transparent text-xs font-semibold text-zinc-900 placeholder-zinc-400 focus:outline-none py-1.5 font-outfit"
+                    className="w-full bg-transparent text-xs font-semibold text-white placeholder-zinc-500 focus:outline-none py-1.5 font-outfit"
                   />
                   <button
                     type="submit"
@@ -134,19 +134,19 @@ export default function Footer() {
           </div>
 
           {/* Bottom Copyright & Fine Print Bar */}
-          <div className="border-t border-zinc-200/80 pt-8 mt-4 flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-[10px] sm:text-xs font-bold tracking-wider text-zinc-500">
-            <span>© {currentYear} FRANLEY LUXURY. ALL RIGHTS RESERVED.</span>
+          <div className="bg-white text-zinc-900 px-6 sm:px-10 py-6 -mx-6 sm:-mx-10 -mb-12 md:-mb-16 rounded-b-[2.0rem] md:rounded-b-[3.0rem] flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 text-[10px] sm:text-xs font-bold tracking-wider border-t border-zinc-200">
+            <span className="text-zinc-650">© {currentYear} FRANLEY LUXURY. ALL RIGHTS RESERVED.</span>
             <a
               href="https://www.arcai.agency"
               target="_blank"
               rel="noopener"
-              className="flex items-center gap-2 hover:text-[#7b0323] transition-colors duration-200 font-semibold text-[10px] sm:text-xs"
+              className="flex items-center gap-2 hover:text-[#7b0323] transition-colors duration-200 font-semibold text-[10px] sm:text-xs text-zinc-800"
               title="ARC AI - AI Automation and Software Company"
             >
               <span>DESIGNED AND BUILT BY</span>
               <img src="/black%20logo.svg" alt="ARC AI Logo" className="h-16 w-auto object-contain" />
             </a>
-            <div className="flex gap-6">
+            <div className="flex gap-6 text-zinc-850">
               <Link href="/privacy-policy" className="hover:text-[#7b0323] transition-colors duration-200 font-outfit">PRIVACY POLICY</Link>
               <Link href="/refund-policy" className="hover:text-[#7b0323] transition-colors duration-200 font-outfit">REFUND POLICY</Link>
             </div>
